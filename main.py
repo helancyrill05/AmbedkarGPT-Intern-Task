@@ -209,7 +209,7 @@ class VectorStoreManager:
         self.vectorstore = None
     
     def setup(self, documents: List[Document], force_rebuild: bool = False) -> Chroma:
-                should_rebuild = force_rebuild or DocumentCache.check_if_changed(Config.DATA_DIR)
+        should_rebuild = force_rebuild or DocumentCache.check_if_changed(Config.DATA_DIR)
         
         logger.info("Loading embedding model...")
         self.embeddings = HuggingFaceEmbeddings(
