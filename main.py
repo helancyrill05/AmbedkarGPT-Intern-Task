@@ -1,8 +1,3 @@
-"""
-Professional RAG System - Production Ready
-Multi-document support, error handling, caching, metrics, and more
-"""
-
 import os
 import sys
 import json
@@ -13,7 +8,6 @@ from typing import List, Dict, Optional, Tuple
 from datetime import datetime
 import hashlib
 
-# Suppress warnings
 warnings.filterwarnings('ignore', category=UserWarning)
 warnings.filterwarnings('ignore', category=FutureWarning)
 os.environ['ANONYMIZED_TELEMETRY'] = 'False'
@@ -27,11 +21,8 @@ from langchain_community.llms import Ollama
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-
-# Configure logging with UTF-8 encoding for Windows
 import io
 
-# Set logging level to ERROR for noisy libraries
 logging.getLogger('chromadb').setLevel(logging.ERROR)
 logging.getLogger('langchain').setLevel(logging.ERROR)
 logging.getLogger('sentence_transformers').setLevel(logging.ERROR)
@@ -46,33 +37,25 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Disable ChromaDB telemetry
 os.environ['ANONYMIZED_TELEMETRY'] = 'False'
 
 
-class Config:
-    """Configuration management"""
-    
-    # Paths
+class Config:    
     DATA_DIR = Path("data")
     VECTOR_DB_DIR = Path("vector_db")
     CACHE_FILE = Path("document_cache.json")
     FALLBACK_FILE = Path("speech.txt")  # Check root directory too
     
-    # Model settings
     EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
     LLM_MODEL = "mistral"
     LLM_TEMPERATURE = 0.2  # Lower for factual responses
     
-    # Chunking settings
     CHUNK_SIZE = 500  # Smaller chunks for better retrieval
     CHUNK_OVERLAP = 100
     
-    # Retrieval settings
     TOP_K = 3
     SIMILARITY_THRESHOLD = 0.3  # Lower threshold for small documents
     
-    # Supported file types
     SUPPORTED_EXTENSIONS = {'.txt', '.md'}
     
     @classmethod
@@ -83,21 +66,18 @@ class Config:
 
 
 class DocumentLoader:
-    """Enhanced document loading with multiple format support"""
     
     @staticmethod
     def load_documents(data_dir: Path) -> List[Document]:
         """Load all supported documents from directory"""
         documents = []
         
-        # Try data directory first
         if data_dir.exists():
             files = list(data_dir.glob("*"))
             supported_files = [f for f in files if f.suffix in Config.SUPPORTED_EXTENSIONS]
         else:
             supported_files = []
         
-        # Fallback: check for speech.txt in root directory
         if not supported_files and Config.FALLBACK_FILE.exists():
             logger.warning(f"⚠️  No data/ folder found. Using {Config.FALLBACK_FILE} from root directory")
             logger.warning(f"💡 Tip: Create a 'data/' folder and put documents there for better organization")
@@ -155,13 +135,11 @@ class DocumentCache:
     
     @staticmethod
     def get_file_hash(filepath: Path) -> str:
-        """Generate hash of file content"""
         with open(filepath, 'rb') as f:
             return hashlib.md5(f.read()).hexdigest()
     
     @staticmethod
     def load_cache() -> Dict:
-        """Load cache from file"""
         if not Config.CACHE_FILE.exists():
             return {}
         
@@ -174,7 +152,6 @@ class DocumentCache:
     
     @staticmethod
     def save_cache(cache: Dict):
-        """Save cache to file"""
         try:
             with open(Config.CACHE_FILE, 'w') as f:
                 json.dump(cache, f, indent=2)
@@ -200,7 +177,6 @@ class DocumentCache:
 
 
 class EnhancedTextSplitter:
-    """Improved text splitting with better semantic preservation"""
     
     @staticmethod
     def split_documents(documents: List[Document]) -> List[Document]:
@@ -216,7 +192,6 @@ class EnhancedTextSplitter:
         
         chunks = splitter.split_documents(documents)
         
-        # Add chunk metadata
         for i, chunk in enumerate(chunks):
             chunk.metadata.update({
                 "chunk_id": i,
@@ -228,17 +203,13 @@ class EnhancedTextSplitter:
 
 
 class VectorStoreManager:
-    """Manages vector store with caching and updates"""
     
     def __init__(self):
         self.embeddings = None
         self.vectorstore = None
     
     def setup(self, documents: List[Document], force_rebuild: bool = False) -> Chroma:
-        """Setup or load vector store"""
-        
-        # Check if we need to rebuild
-        should_rebuild = force_rebuild or DocumentCache.check_if_changed(Config.DATA_DIR)
+                should_rebuild = force_rebuild or DocumentCache.check_if_changed(Config.DATA_DIR)
         
         logger.info("Loading embedding model...")
         self.embeddings = HuggingFaceEmbeddings(
@@ -271,14 +242,12 @@ class VectorStoreManager:
 
 
 class RAGSystem:
-    """Main RAG system orchestrator"""
     
     def __init__(self):
         self.qa_chain = None
         self.vectorstore = None
         self.query_history = []
         
-        # Custom prompt template
         self.prompt_template = """Use the following context to answer the question. 
 If you cannot find the answer in the context, say "I don't have enough information to answer this question based on the provided documents."
 
@@ -366,10 +335,8 @@ Detailed Answer:"""
             logger.info(f"Question: {question}")
             logger.info("-" * 80)
             
-            # Get response
             result = self.qa_chain.invoke({"query": question})
             
-            # Extract sources
             sources = []
             if result.get('source_documents'):
                 for doc in result['source_documents']:
@@ -386,10 +353,8 @@ Detailed Answer:"""
                 "timestamp": datetime.now().isoformat()
             }
             
-            # Log to history
             self.query_history.append(response)
             
-            # Display sources
             if sources:
                 logger.info("\nSources:")
                 for i, source in enumerate(sources, 1):
@@ -406,7 +371,6 @@ Detailed Answer:"""
             return {"error": str(e)}
     
     def save_history(self, filename: str = "query_history.json"):
-        """Save query history to file"""
         try:
             with open(filename, 'w') as f:
                 json.dump(self.query_history, f, indent=2)
@@ -416,7 +380,6 @@ Detailed Answer:"""
 
 
 def interactive_mode(rag: RAGSystem):
-    """Run interactive Q&A session"""
     
     print("\n" + "=" * 80)
     print("Interactive Mode")
@@ -466,18 +429,15 @@ def interactive_mode(rag: RAGSystem):
 
 
 def main():
-    """Main execution"""
     
     print("=" * 80)
     print("Professional RAG System - Production Ready")
     print("=" * 80 + "\n")
     
     try:
-        # Initialize RAG system
         rag = RAGSystem()
         rag.setup(force_rebuild=False)  # Set to True to force rebuild
         
-        # Example questions
         example_questions = [
             "What is the main argument of the text?",
             "What solutions are proposed?",
@@ -491,10 +451,8 @@ def main():
         for question in example_questions:
             rag.ask(question)
         
-        # Interactive mode
         interactive_mode(rag)
         
-        # Save history on exit
         rag.save_history()
         
     except Exception as e:
