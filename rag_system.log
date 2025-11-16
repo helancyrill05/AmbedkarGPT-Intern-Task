@@ -1,0 +1,71 @@
+2025-11-16 16:28:22,926 - INFO - ================================================================================
+2025-11-16 16:28:22,926 - INFO - Loading documents...
+2025-11-16 16:28:22,926 - INFO - Found 1 documents to load
+2025-11-16 16:28:22,926 - INFO - [OK] Loaded: speech.txt
+2025-11-16 16:28:22,926 - INFO - [OK] Loaded 1 document(s)
+2025-11-16 16:28:22,926 - INFO - 
+Splitting documents...
+2025-11-16 16:28:22,926 - INFO - [OK] Split into 2 chunks
+2025-11-16 16:28:22,926 - INFO - 
+Setting up vector store...
+2025-11-16 16:28:22,926 - INFO - Loading embedding model...
+2025-11-16 16:30:22,806 - INFO - ================================================================================
+2025-11-16 16:30:22,806 - INFO - Loading documents...
+2025-11-16 16:30:22,847 - INFO - Found 1 documents to load
+2025-11-16 16:30:22,847 - INFO - [OK] Loaded: speech.txt
+2025-11-16 16:30:22,847 - INFO - [OK] Loaded 1 document(s)
+2025-11-16 16:30:22,847 - INFO - 
+Splitting documents...
+2025-11-16 16:30:22,847 - INFO - [OK] Split into 2 chunks
+2025-11-16 16:30:22,847 - INFO - 
+Setting up vector store...
+2025-11-16 16:30:22,847 - INFO - Loading embedding model...
+2025-11-16 16:30:34,382 - INFO - Building new vector store...
+2025-11-16 16:30:35,964 - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2025-11-16 16:30:35,999 - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+2025-11-16 16:30:36,112 - INFO - [OK] Vector store created
+2025-11-16 16:30:36,112 - INFO - 
+Initializing LLM...
+2025-11-16 16:30:36,114 - INFO - [OK] LLM initialized
+2025-11-16 16:30:36,114 - INFO - 
+Creating retrieval chain...
+2025-11-16 16:30:36,116 - INFO - [OK] RAG pipeline ready!
+2025-11-16 16:30:36,116 - INFO - ================================================================================
+2025-11-16 16:30:36,116 - INFO - 
+================================================================================
+2025-11-16 16:30:36,116 - INFO - Question: What is the main argument of the text?
+2025-11-16 16:30:36,116 - INFO - --------------------------------------------------------------------------------
+2025-11-16 16:30:36,148 - ERROR - Failed to send telemetry event CollectionQueryEvent: capture() takes 1 positional argument but 3 were given
+2025-11-16 16:30:57,997 - INFO - 
+Sources:
+2025-11-16 16:30:57,997 - INFO -   [1] speech.txt (chunk 1)
+2025-11-16 16:30:57,997 - INFO -   [2] speech.txt (chunk 0)
+2025-11-16 16:30:57,997 - INFO - ================================================================================
+2025-11-16 16:30:57,997 - INFO - 
+================================================================================
+2025-11-16 16:30:57,997 - INFO - Question: What solutions are proposed?
+2025-11-16 16:30:57,997 - INFO - --------------------------------------------------------------------------------
+2025-11-16 16:31:24,755 - INFO - 
+Sources:
+2025-11-16 16:31:24,756 - INFO -   [1] speech.txt (chunk 0)
+2025-11-16 16:31:24,756 - INFO -   [2] speech.txt (chunk 1)
+2025-11-16 16:31:24,756 - INFO - ================================================================================
+2025-11-16 16:31:24,756 - INFO - 
+================================================================================
+2025-11-16 16:31:24,756 - INFO - Question: Summarize the key points in 3 sentences.
+2025-11-16 16:31:24,756 - INFO - --------------------------------------------------------------------------------
+2025-11-16 16:31:48,595 - INFO - 
+Sources:
+2025-11-16 16:31:48,595 - INFO -   [1] speech.txt (chunk 1)
+2025-11-16 16:31:48,595 - INFO -   [2] speech.txt (chunk 0)
+2025-11-16 16:31:48,595 - INFO - ================================================================================
+2025-11-16 16:33:36,880 - INFO - 
+================================================================================
+2025-11-16 16:33:36,880 - INFO - Question: who is this information derived from?
+2025-11-16 16:33:36,880 - INFO - --------------------------------------------------------------------------------
+2025-11-16 16:33:50,972 - INFO - 
+Sources:
+2025-11-16 16:33:50,973 - INFO -   [1] speech.txt (chunk 1)
+2025-11-16 16:33:50,973 - INFO -   [2] speech.txt (chunk 0)
+2025-11-16 16:33:50,973 - INFO - ================================================================================
+2025-11-16 16:35:33,625 - INFO - [OK] History saved to query_history.json
