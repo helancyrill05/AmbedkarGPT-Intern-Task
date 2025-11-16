@@ -1,0 +1,7 @@
+vector_db/ 
+chroma_db/ 
+__pycache__/ 
+*.pyc 
+rag_system.log 
+document_cache.json 
+query_history.json 
